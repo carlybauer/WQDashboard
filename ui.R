@@ -1,4 +1,4 @@
-#
+# Author: Carly Bauer 
 # This is the user-interface definition of a Shiny web application. You can
 # run the application by clicking 'Run App' above.
 #
@@ -7,9 +7,9 @@
 #    https://shiny.posit.co/
 #
 
-setwd("~/Documents/R/BVR/WQDashboard")
+#setwd("~/Documents/R/BVR/WQDashboard")
 library(shiny)
-library(bslib)  # For page_navbar
+library(bslib)  # For page_navbar and like everything else - what shiny r recomends for nice features
 library(plotly)
 library(dplyr)
 library(shiny)
@@ -25,6 +25,9 @@ ui <- page_navbar(
   theme = bs_theme(bootswatch = "flatly"),
   
   nav_panel("Background",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
             layout_sidebar(
               sidebar = sidebar(
                 h3("Check Your Understanding"),
@@ -53,7 +56,7 @@ ui <- page_navbar(
                     p("Surface water is a vital source of drinking water. 
                     Natural and human activities can affect the water quality of these sources that are then distributed for human consumption. 
           Recently, the western United States has experienced intense wildfires. Burning the landscape surrounding a body of water can negatively impact its quality. 
-          Wildfires are a natural and necessary part of many landscapes in the western United States, the frequency and intensity of these fires create risks for drinking water quality.
+          However, wildfires are a natural and necessary part of many landscapes, as they can reduce dead vegetation, stimulate new growth and improve habitat. In the western United States, the frequency and intensity of these fires create risks for drinking water quality.
           The frequency of extreme wildfire events has more than doubled from 2003 - 2023 (Cunningham et al., 2024).
           Within the last 7 years, 6 of the most extreme wildfires have occurred, exemplifying the importance of understanding how they affect water quality (Cunningham et al., 2024).
           However, wildfires are a natural and necessary part of many landscapes in the western United States, the frequency and intensity of these fires create risks for drinking water quality."),
@@ -66,6 +69,7 @@ ui <- page_navbar(
                   layout_columns(
                     col_widths = c(8, 4),  
                     
+                      
                     p("Causes of wildfires can be attributed to the changing climate, including increasing temperatures, drought, reduced snowpack, less rainfall, and extreme flood events."),
                     
                     tags$img(src = "SEKI-mudslide_corr_2000.webp", 
@@ -75,7 +79,9 @@ ui <- page_navbar(
                   layout_columns(
                     col_widths = c(8, 4),  
                     
-                    p("Fires can negatively affect drinking water sources durring, immediately after the fire or for months to years afterwards. Wildfires may lead to dangerous algal blooms which severely affect water quality."),
+                    p("Wildfires can negatively affect drinking water sources during, immediately after the fire or for months to years afterwards. 
+                      Wildfires release harmful ash excess sediments, nutrients, metals, and other contaminants to the environment. 
+                      The increase in nutrients released can end up in water sources which may lead to excessive algal growth or turbidity."),
                     
                     tags$img(src = "AlgalBloomE.webp", 
                              style = "width: 80%; height: auto; margin-bottom: 10px;")
@@ -84,101 +90,120 @@ ui <- page_navbar(
                   layout_columns(
                     col_widths = c(2,10),
                     
-                    p("Conceptual figure"),
+                    p(),# new paragraph to put conceptual figure 
                     tags$img(src = "RoLConcept.png", 
-                             style = "width: 50%; height: auto;")
-                  )# closes 4th layout_columns()
+                             style = "width: 50%; height: auto;")                  )# closes 4th layout_columns()
               )# closes layout_sidebar()
             )# Closes div
+            )#closes div for scroll
   ),
   
   ### Conceptual Activity and Gauges
-  nav_panel("Conceptual Activity",
+  nav_panel("Nutrients",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
             layout_sidebar(
               width = 1,
               # Sidebar for selecting scenario and nutrient
               sidebar = sidebar(
-                p("1. Start with the unburned scenario which represents a normal watershed.  
-                Record the maximum value for each nutrient and each scenario."),
+                p("1. Observe the maximum nutrient measured for each scenario."),
                 selectInput("scenario", "Choose a Scenario:",
                             choices = max_df$Scenario, selected = "baseline"),
               ),
               layout_column_wrap(
-                width = 1/3,
-                plotlyOutput("gaugePlot_Nitrate", width = "100%", height = "300px"),
-                plotlyOutput("gaugePlot_Phosphorus", width = "100%", height = "300px"),
+                width = 1/2, #change to 1/3 if showing DOC
+                plotlyOutput("gaugePlot_Nitrate", width = "100%", height = "350px"),
+                plotlyOutput("gaugePlot_Phosphorus", width = "100%", height = "350px")
                 # plotlyOutput("gaugePlot_DOC", width = "100%", height = "300px")
               )
             ),
             layout_column_wrap(
               p("2. Find the percent change in nutrient input between different burn
                 intensities using the formula: Percent Change = ((value 1 - value 2) / value 1) *100. 
-                Download the excel file including the data used above and a percent change calculator."),
+                Download the excel file including the data used above and a percent change calculator. Then answer the questions below."),
                 downloadButton("download_calculator", "Download percent change calculator and nutrient data"),
 
-            )
-  ),
-  
-  ### Data activity 1
-  nav_panel("Total Chlorophyll-a",
-            ## T-chla Download and plot
-            layout_sidebar(
-              height = "15000px",
-              sidebar = sidebar(
-                style = "height:100%;overflow-y: scroll;",
-                p("1. Total chlorophyll a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll a concentrations for a year.
-                  Plot time on the x axis and concentrations on the y axis. An example of what this may look like is to the right."),
-                downloadButton("download_chla", "Download chlorophyll data")
-              ),
-              layout_column_wrap(
-                width = 1,
-                plotlyOutput("TChla_timeseries")
-              )
             ),
-            
-            # Div for side-by-side questions (chla questions)
+            # Div for side-by-side questions (gauge / percent change questions)
             div(
               style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
-              # Question chla 1 box
+              # Question nutrients1 box
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
                 tags$div(
-                  "Question: Based on your total chlorophyll-a plot, what time of year would we expect an algal bloom to occur?",
+                  "Question: What is the percent change in nitrate between the unburned and the 100% burned scenario?",
                   style = "margin-bottom: 5px;"
                 ),
                 radioButtons(
-                  "chla_bloom",
+                  "nit_pchange",
                   label = NULL,
-                  choices = c("Spring to Summer", "Summer to Fall"),
+                  choices = c("160%", "121%", "116%", "201%"),
                   selected = character(0)
                 ),
-                textOutput("chla_bloom_feedback")
+                textOutput("nit_pchange_feedback")
               ),
-              
-              # Question chla 2 box
+              # Question p_pchange 2 box
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
                 tags$div(
-                  "Question: Did the high intensity burn increase, decrease, or not change total chlorophyll-a concentrations compared to no-burn baseline conditions.",
+                  "Question: What is the percent change in phosphorus between the 25% burned and 100% burned scenario?",
                   style = "margin-bottom: 5px;"
                 ),
                 radioButtons(
-                  "chla_bloom2",
+                  "p_pchange",
                   label = NULL,
-                  choices = c("increase", "decrease", "no change"),
+                  choices = c("10.8%", "33.0%", "24.9%", "50.4%"), 
                   selected = character(0)
                 ),
-                textOutput("chla_bloom_feedback2")
+                textOutput("p_pchange_feedback")
+              )
+            ),
+            # Div for side-by-side questions (gauge / percent change questions)
+            div(
+              style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+              # Question nutrients3 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                tags$div(
+                  "Question: What is the percent change in nitrate between the 25% and the 50% burned scenario?",
+                  style = "margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "nit_pchange2",
+                  label = NULL,
+                  choices = c("20.8%", "52.0%", "115%", "41.9%"),
+                  selected = character(0)
+                ),
+                textOutput("nit_pchange_feedback2")
+              ),
+              # Question p_pchange 4 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                tags$div(
+                  "Question: What is the percent change in phosphorus between the 50% burned and 100% burned scenario?",
+                  style = "margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "p_pchange2",
+                  label = NULL,
+                  choices = c("51.5%", "20.1%", "20.8%", "13.0%"), 
+                  selected = character(0)
+                ),
+                textOutput("p_pchange_feedback2")
               )
             )
+            ) #closes div for scrollable page   
   ),
   
  
-  ### Data activity 2
+  ### Data activity 1
   nav_panel("Water Temperature",  
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
             # Download Water Temp plot
             layout_sidebar(
-              height = "15000px",
               sidebar = sidebar(
                 style = "height:100%;overflow-y: scroll;",
                 p("1. Download excel file of a time series of water tempurate for a year comparing baseline water temperatures and water temperatures from the most intense fire.
@@ -215,32 +240,167 @@ ui <- page_navbar(
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Pale green box
                 tags$div(
-                  "Question: What is the water temperature for both scenarios on July 20, 2020?",                
+                  "Question: Find the date November 12th, 2020 (2020-11-12) by hovering over the points on the graph. 
+                  What is the water temperature for both scenarios on November 12, 2020 (2020-11-12)?",                
                   style = "width: 100%; margin-bottom: 5px;"
                 ),
                 radioButtons(
                   "water_temp2",
                   label = NULL,
-                  choices = c("Baseline = 28.8   Fire 100 = 29.0", "Baseline = 25.8   Fire 100 = 32.1",
-                              "Baseline = 28.2   Fire 100 = 28.9", "Baseline = 26.0   Fire 100 = 29.8"),
+                  choices = c("Baseline = 18.8   Fire 100 = 17.0", "Baseline = 14.7   Fire 100 = 17.7",
+                              "Baseline = 14.5   Fire 100 = 17.5", "Baseline = 17.7   Fire 100 = 14.7"),
                   selected = character(0)
                 ),
                 textOutput("water_temp_feedback2")
               )
+            ),
+            # Div for side-by-side questions (temp questions)
+            div(
+              style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+              # Question temp 1 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Moccasin color box
+                tags$div(
+                  "Question: Warmer water temperature could cause algal blooms which deplete oxygen and may kill fish.",
+                  style = "width: 100%; margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "water_temp3",
+                  label = NULL,
+                  choices = c("True", "False"),
+                  selected = character(0)
+                ),
+                textOutput("water_temp_feedback3")
+              ),
+              
+              # Question temp 4 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Pale green box
+                tags$div(
+                  "Question: Water temperature is the highest during what time of year?",                
+                  style = "width: 100%; margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "water_temp4",
+                  label = NULL,
+                  choices = c("Summer", "Winter"),
+                  selected = character(0)
+                ),
+                textOutput("water_temp_feedback4")
+              )
             )
+            )# closes div for scroll
+  ),
+  
+  ### Data activity 2
+  nav_panel("Total Chlorophyll-a",
+            ## T-chla Download and plot
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
+              layout_sidebar(
+                sidebar = sidebar(
+                  style = "height:100%;overflow-y: scroll;",
+                  p("Total chlorophyll a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll a concentrations for a year in an unburned watershed and a 100% burned watershed.
+                  Plot time on the x axis and concentrations on the y axis. An example of what this may look like is to the right."),
+                  downloadButton("download_chla", "Download chlorophyll data")
+                ),
+                layout_column_wrap(
+                  width = 1,
+                  plotlyOutput("TChla_timeseries")
+                )
+              ),
+              
+              # Div for side-by-side questions (chla questions)
+              div(
+                style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question chla 1 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "Question: Based on your total chlorophyll-a plot, what time of year would we expect an algal bloom to occur?",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom",
+                    label = NULL,
+                    choices = c("Spring to Summer", "Summer to Fall"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback")
+                ),
+                
+                # Question chla 2 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "Question: Did the high intensity burn increase, decrease, or not change total chlorophyll-a concentrations compared to no-burn baseline conditions.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom2",
+                    label = NULL,
+                    choices = c("increase", "decrease", "no change"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback2")
+                )
+              ),
+              # Div for side-by-side questions (chla questions)
+              div(
+                style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question chla 3 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "Question: Find the date September 29th, 2020 (2020-09-29) by hovering over the points on the graph. What is the total 
+                  chlorophyll-a concentration rounding to one decimal place for the unburned (baseline) and 100% burned (Fire100) scenario on that day?",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom3",
+                    label = NULL,
+                    choices = c("Baseline = 23.2 mg/L, Fire100 = 33.0 mg/L", "Baseline = 18.3 mg/L, Fire100 = 35.2 mg/L", "Baseline = 23.9 mg/L , Fire100 = 34.7 mg/L", "Baseline = 16.2 mg/L, Fire100 = 20.8 mg/L"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback3")
+                ),
+                
+                # Question chla 4 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "Question: What caused total chlorophyll-a concentrations to change based on what you learned in the background information?",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom4",
+                    label = NULL,
+                    choices = c("increase in dead fish", "increase in nutrients", "decrease in nutrients", "increase in rain"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback4")
+                )
+              )
+            )#close first div that allows scroll page
   ),
  
   # Vocabulary words
   nav_panel("Vocabulary",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
             layout_column_wrap(
               width = 1, 
               h2("List of vocabulary words used in the background."),
+              # tags$br(), #adds a line break
               p(
-                tags$b("algal bloom:"), 
+                tags$b("algal bloom:"), #tags$b bolds the text
                 " An episode of excessive nutrient content in a river, stream, or lake, which causes a proliferation of living algae. 
         The end result is a depletion of much needed oxygen in the water.
         Excessive algae blooms can lead to the death of the fish and aquatic organisms of the given waterbody through oxygen deprivation called a 'fish kill'."
               ),
+             
               p(
                 tags$b("ash:"), 
                 "The mineral content of a product remaining after complete combustion."
@@ -254,14 +414,17 @@ ui <- page_navbar(
                 " A compound containing nitrogen that can exist in the atmosphere or as a dissolved gas in water and which can have harmful effects on humans and animals.
         Nitrates in water can cause severe illness in infants and domestic animals. A plant nutrient and inorganic fertilizer, nitrate is found in septic systems, animal feed lots, agricultural fertilizers, manure, industrial waste waters, sanitary landfills, and garbage dumps."
               ),
+               
               p(
                 tags$b("nutrients:"), 
                 "Substances such as nitrogen and phosphorus compounds necessary for growth and survival. Elevated levels can cause unwanted growth of algae, and can result in the lowering of the amount of oxygen in the water when the algae die and decay."
               ),
+              
               p(
                 tags$b("phosphorus:"), 
                 " An essential chemical food element that can contribute to the eutrophication of lakes and other water bodies. Contributes to poor water quality. Elevated phosphorus levels cause more algae to grow, blocking out sunlight and reducing oxygen for fish."
               ),
+              
               p(
                 tags$b("reservoir:"), 
                 "Any natural or artificial holding area used to store, regulate, or control water."
@@ -269,6 +432,10 @@ ui <- page_navbar(
               p(
                 tags$b("sediment:"), 
                 " Soil, particles, sand, and other mineral matter eroded from land and carried in surface waters."
+              ),
+              p(
+                tags$b("turbidity:"), 
+                " A measure of the cloudy condition in water due to suspended solids or organic matter."
               ),
               p(
                 tags$b("watershed:"), 
@@ -283,6 +450,7 @@ ui <- page_navbar(
                 " https://sor.epa.gov/sor_internet/registry/termreg/searchandretrieve/termsandacronyms/search.do"
               )
             )
+            ) #closes div for scroll
   ),
   
   
@@ -299,20 +467,29 @@ ui <- page_navbar(
   nav_panel("Dashboard Setup",
             layout_column_wrap(
               width =1, 
-              p("The dashboard was designed using a general lake model (GLM) of a secondary drinking water reservoir in Virginia. 
-                A literature review of how nutrients (nitrate, phosphorus, dissolved organic carbon) are affected in a reservoir following different burn intensities was used to manipulate the model.")
+              p("The data used in this dashboard was generated using a General Lake Model (GLM) coupled with an Aquatic EcoDynamics library (AED) of a secondary drinking water reservoir in Virginia.. GLM is a water balance and one-dimensional vertical stratification hydrodynamic model and AED is a water quality modelling library. 
+                A literature review of how nutrients (nitrate and phosphorus) are affected in a reservoir following different burn intensities was used to manipulate the model.")
+            ),
+            layout_column_wrap(
+              width =1, 
+              p("Created by: Dr. Madeline Schreiber and Carly Bauer")
             )),
 
   # Page for teacher use
   nav_panel("Teachers",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
             layout_column_wrap(
               width =1, 
               h2("Lesson Summary: How can wildfires impact water quality in drinking water reservoirs in southwest Virginia?"),
+              
               tags$ul(
                 tags$li("Review background material"),
                 tags$li("Work with water quality data to investigate how wildfire impacts water quality in drinking water reservoirs"),
                 tags$li("Plot time series data of water quality variables in drinking water reservoirs affected by wildfire and answer questions about the trends")
               ),
+              
               h2("Student Learning Objectives", style = "margin-bottom: 0px;"), 
                 p("After completing this lesson, students will be able to: ", style = "margin-bottom: 0px;"),
               tags$ul(
@@ -321,14 +498,18 @@ ui <- page_navbar(
                 tags$li("Compare the impacts of wildfire burning on water quality using a dashboard containing model simulation data"),
                 tags$li("Plot and explore time series data to investigate how wildfire in a watershed impacts water temperature")
               ),
+              
               h2("Lesson Plan Activities"),
                tags$ul(
                  tags$li("Students review wildfire impacts on water quality via backgorund readings built into the dashboard and answer 'Check my Understanding' questions"),
-                 tags$li("Students explore a conceptual activiting using the dashbard to examine nutrient input to a reservoir from a watershed with different fire scenarios (none, 25%, 50%, or 100% burned), plot those data using a spreading/graphing progam, calculate percent change using excel template, and answer questions"),
+                 tags$li("Students explore a conceptual activiting using the dashbard to examine nutrient input to a reservoir from a watershed with different fire scenarios (unburned, 25%, 50%, or 100% burned), plot those data using a spreading/graphing progam, calculate percent change using excel template, and answer questions"),
                  tags$li("Students download time series data")
-               )
+               ),
+              
 
-            ))
+            )
+            )
+  )# closes div for scroll
   
 
   

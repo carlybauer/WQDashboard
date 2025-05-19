@@ -1,4 +1,4 @@
-#
+# Author: Carly Bauer
 # This is the server logic of a Shiny web application. You can run the
 # application by clicking 'Run App' above.
 #
@@ -7,7 +7,7 @@
 #    https://shiny.posit.co/
 #
 
-setwd("~/Documents/R/BVR/WQDashboard")
+#setwd("~/Documents/R/BVR/WQDashboard")
 library(shiny)
 library(bslib)  # For page_navbar
 library(plotly)
@@ -91,13 +91,52 @@ server <- function(input, output, session) {
       file.copy("percent_change_calculator.xlsx", file)
     })
   
+  # Feedback for nit percent change question 1
+  output$nit_pchange_feedback <- renderText({
+    req(input$nit_pchange)  # Ensure user has selected an answer
+    if (input$nit_pchange == "160%") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for p percent change question 1
+  output$p_pchange_feedback <- renderText({
+    req(input$p_pchange)  # Ensure user has selected an answer
+    if (input$p_pchange == "33.0%") {####CHANGE THIS
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for nit percent change question 2
+  output$nit_pchange_feedback2 <- renderText({
+    req(input$nit_pchange2)  # Ensure user has selected an answer
+    if (input$nit_pchange2 == "41.9%") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for p percent change question 2
+  output$p_pchange_feedback2 <- renderText({
+    req(input$p_pchange2)  # Ensure user has selected an answer
+    if (input$p_pchange2 == "20.1%") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
   # output$gaugePlot_DOC <- renderPlotly({
   #   req(selected_data())  # Ensure data is available
   #   create_gauge(selected_data()$DOC_Max_mgL, "DOC Max (mg/L)", max(max_df$DOC_Max_mgL))
   # })  
   
-  chlorophyll_data <- read_csv("TimeSeries_TotalChla.csv")
-  
+  chlorophyll_data <- read_csv("TimeSeries_TotalChla.csv") #download data as csv
   output$download_chla <- downloadHandler(
     filename = function() {
       paste("chlorophyll_data", ".xlsx", sep = "")
@@ -136,6 +175,26 @@ server <- function(input, output, session) {
     req(input$chla_bloom2)  # Ensure user has selected an answer
     if (input$chla_bloom2 == "increase") {
       "✅ Correct! High burn intensities release more nutrients into water sources, causing an increase in total chlorophyll-a concentrations."
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for chla bloom question 3
+  output$chla_bloom_feedback3 <- renderText({
+    req(input$chla_bloom3)  # Ensure user has selected an answer
+    if (input$chla_bloom3 == "Baseline = 23.9 mg/L , Fire100 = 34.7 mg/L") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for chla bloom question 4
+  output$chla_bloom_feedback4 <- renderText({
+    req(input$chla_bloom4)  # Ensure user has selected an answer
+    if (input$chla_bloom4 == "increase in nutrients") {
+      "✅ Correct! The high intensity burn caused nutrients like nitrate and phosphorus to increase which cause total chlorophyll-a concentrations to increase."
     } else {
       "❌ Incorrect. Try again"
     }
@@ -188,12 +247,33 @@ server <- function(input, output, session) {
   # Feedback for Water temp question
   output$water_temp_feedback2 <- renderText({
     req(input$water_temp2)  # Ensure user has selected an answer
-    if (input$water_temp2 == "Baseline = 28.8   Fire 100 = 29.0") {
+    if (input$water_temp2 == "Baseline = 14.7   Fire 100 = 17.7") {
       "✅ Correct!"
     } else {
       "❌ Incorrect. Try again."
     }
   })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback3 <- renderText({
+    req(input$water_temp3)  # Ensure user has selected an answer
+    if (input$water_temp3 == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback4 <- renderText({
+    req(input$water_temp4)  # Ensure user has selected an answer
+    if (input$water_temp4 == "Summer") {
+      "✅ Correct! The air temperature is warmer which warms the water temperature." 
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
 }
 
 # # Run the application 
