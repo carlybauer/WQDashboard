@@ -32,10 +32,27 @@ ui <- page_navbar(
               sidebar = sidebar(
                 h3("Check Your Understanding"),
                 
-                radioButtons("surface_water", "Surface water sources are important sources of drinking water?",
+                radioButtons("surface_water", "Surface water sources are important sources of drinking water.",
                              choices = c("True", "False"),
                              selected = character(0)),
                 textOutput("surface_water_feedback"), #displays right/wrong
+                
+                radioButtons("wildfire_intensity", "Wildfire frequency and intensity has increased over the last decade.",
+                             choices = c("True", "False"),
+                             selected = character(0)),
+                textOutput("wildfire_intensity_feedback"), #displays right/wrong
+                
+                
+                radioButtons("wildfire_causes", "Which of the following likely increases the frequency and severity of a wildfire.",
+                             choices = c("increasing temperatures", "droughts", "reduced snowpack", "less rainfall", "all of the above"),
+                             selected = character(0)),
+                textOutput("wildfire_causes_feedback"), #displays right/wrong
+                
+                
+                radioButtons("wildfire_contaminants", "Burning the landscape surrounding a body of water will release potentially harmful amounts of ash, nutrients, and sediment into the water. ",
+                             choices = c("True", "False"),
+                             selected = character(0)),
+                textOutput("wildfire_contaminants_feedback"), #displays right/wrong
                 
                 radioButtons("wildfire_effect", "Which of the following is a possible effect of increased nutrients in water sources?",
                              choices = c("Decreased algae growth", "Decreased nitrate", "Increased algae growth", "Lower water temperature"),
@@ -52,47 +69,63 @@ ui <- page_navbar(
                   layout_columns(
                     col_widths = c(8, 4), 
                     
+                    div(
                     # Text Section (8 columns)
+                    h4("Water Sources and Wildfires"), 
                     p("Surface water is a vital source of drinking water. 
-                    Natural and human activities can affect the water quality of these sources that are then distributed for human consumption. 
-          Recently, the western United States has experienced intense wildfires. Burning the landscape surrounding a body of water can negatively impact its quality. 
-          However, wildfires are a natural and necessary part of many landscapes, as they can reduce dead vegetation, stimulate new growth and improve habitat. In the western United States, the frequency and intensity of these fires create risks for drinking water quality.
-          The frequency of extreme wildfire events has more than doubled from 2003 - 2023 (Cunningham et al., 2024).
-          Within the last 7 years, 6 of the most extreme wildfires have occurred, exemplifying the importance of understanding how they affect water quality (Cunningham et al., 2024).
-          However, wildfires are a natural and necessary part of many landscapes in the western United States, the frequency and intensity of these fires create risks for drinking water quality."),
+                    Natural and human activities can affect the quality of water sources that are eventually used for human consumption. 
+          Recently, the western United States has experienced increasingly frequent and severe wildfires, which pose growing risks to water sources.
+           
+          While wildfires are a natural and necessary part of many landscapes, as they can reduce dead vegetation, stimulate new growth, and improve habitat, their increasing frequency and intensity have raised serious concerns.
+          From 2003 to 2023, the number of extreme wildfire events more than doubled (Cunningham et al., 2024).
+          Six of the most severe wildfires on record occurred within the last seven years (Cunningham et al., 2024), highlighting the urgent need to understand how wildfires affect water quality, especially in regions that depend on surface water for drinking supplies.")
+                              ), # close first text div
                     
+                    div(
                     # Image (4 columns)
                     tags$img(src = "BVR.png", 
-                             style = "width: 80%; height: auto; margin-bottom: 10px;")
-                  ),
+                             style = "width: 100%; height: auto; margin-bottom: 10px;")
+                    )# close first image div
+                    ),
                   
                   layout_columns(
                     col_widths = c(8, 4),  
                     
-                      
-                    p("Causes of wildfires can be attributed to the changing climate, including increasing temperatures, drought, reduced snowpack, less rainfall, and extreme flood events."),
-                    
-                    tags$img(src = "SEKI-mudslide_corr_2000.webp", 
-                             style = "width: 80%; height: auto; margin-bottom: 10px;")
+                    div(
+                    h4("Causes of Wildfires"),  
+                    p("This increase in wildfire activity is closely tied to changes in climate. 
+                      Rising temperatures, droughts, reduced snowpack, less consistent rainfall, and extreme weather events have all contributed to drier, more fire-prone conditions.")
+                    ), # close second text div
                   ), #closes second layout_columns()
+
                   
                   layout_columns(
                     col_widths = c(8, 4),  
                     
-                    p("Wildfires can negatively affect drinking water sources during, immediately after the fire or for months to years afterwards. 
-                      Wildfires release harmful ash excess sediments, nutrients, metals, and other contaminants to the environment. 
-                      The increase in nutrients released can end up in water sources which may lead to excessive algal growth or turbidity."),
+                    div(
+                    h4("Effects of Wildfires on Water Quality"),
+                    p("Wildfires can impact drinking water sources during the fire, immediately afterward, and even for months or years following the event. 
+                    Fires release ash, sediments, nutrients, metals, and other contaminants that can be transported into lakes, rivers, and reservoirs. 
+                    After a wildfire, intense rainstorms often lead to mudslides and debris flows, which carry large amounts of ash and sediments into water bodies."),
+                    p("Nutrient pollution is another major concern. 
+                      Nutrients such as nitrogen and phosphorus are released from burned vegetation and soils, and when they enter aquatic systems, they can lead to excessive algal growth. 
+                      These algal blooms decrease water quality and reduce oxygen levels as the algae die and decompose. 
+                      Low oxygen levels can harm aquatic organisms, including fish. 
+                      In addition, the loss of shade-providing vegetation can raise stream temperatures, which further contributes to oxygen depletion and makes water bodies more susceptible to algal blooms."),
+                       tags$img(src = "RoLConcept.png",
+                                style = "width: 100%; height: auto;")
+                    ), # closes third text div
                     
-                    tags$img(src = "AlgalBloomE.webp", 
-                             style = "width: 80%; height: auto; margin-bottom: 10px;")
-                  ),# closes third layout_columns()
+                    div(
+                    tags$img(src = "AlgalBloom.png", 
+                             style = "width: 100%; height: auto; margin-bottom: 10px;"),
+                     tags$img(src = "Debrisflow.png", 
+                              style = "width: 100%; height: auto; margin-bottom: 10px;")
+                    ), # closes third image div
+
+                  )# closes third layout_columns()
                   
-                  layout_columns(
-                    col_widths = c(2,10),
-                    
-                    p(),# new paragraph to put conceptual figure 
-                    tags$img(src = "RoLConcept.png", 
-                             style = "width: 50%; height: auto;")                  )# closes 4th layout_columns()
+
               )# closes layout_sidebar()
             )# Closes div
             )#closes div for scroll
@@ -192,7 +225,44 @@ ui <- page_navbar(
                 ),
                 textOutput("p_pchange_feedback2")
               )
-            )
+            ),# closes div for side-by-side
+            
+            
+            # Div for side-by-side questions (gauge / percent change questions)
+            div(
+              style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+              # Question nutrients5 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                tags$div(
+                  "Question: Nitrate and phosphorus increase following a wildfire.",
+                  style = "margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "nutrients1",
+                  label = NULL,
+                  choices = c("True", "False"),
+                  selected = character(0)
+                ),
+                textOutput("nutrients_feedback1")
+              ),
+              
+              # Question nutrients6 box
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                tags$div(
+                  "Question: Increasing nutrients (nitrate and phosphorus), increases total chlorophyll-a concentrations and thus the likelihood of algal blooms.",
+                  style = "margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "nutrients2",
+                  label = NULL,
+                  choices = c("True", "False"), 
+                  selected = character(0)
+                ),
+                textOutput("nutrients_feedback2")
+              )
+            )# closes div for side-by-side
             ) #closes div for scrollable page   
   ),
   
@@ -206,7 +276,8 @@ ui <- page_navbar(
             layout_sidebar(
               sidebar = sidebar(
                 style = "height:100%;overflow-y: scroll;",
-                p("1. Download excel file of a time series of water tempurate for a year comparing baseline water temperatures and water temperatures from the most intense fire.
+                p(tags$b("Practice your plotting skills:"), 
+                "Download excel file of a time series of water temperature for a year comparing the water temperatures of an unburned watershed to a watershed that experienced the most intense burn.
                   Plot time on the x axis and temperatures on the y axis. An example of what this may look like is to the right."),
                 downloadButton("download_temp", "Download temperature data"),
                 downloadButton("download_directions", "Download plotting directions")
@@ -224,13 +295,13 @@ ui <- page_navbar(
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Moccasin color box
                 tags$div(
-                  "Question: Would you expect a lower intensity wildfire to cause water temperatures to increase or decrease in comparison to the highest burn intensity water temperature?",
+                  "Question: Would you expect an unburned watershed to have higher water temperatures than a watershed that experienced a high intensity burn?",
                   style = "width: 100%; margin-bottom: 5px;"
                 ),
                 radioButtons(
                   "water_temp",
                   label = NULL,
-                  choices = c("Increase", "Decrease"),
+                  choices = c("Yes", "No"),
                   selected = character(0)
                 ),
                 textOutput("water_temp_feedback")
@@ -241,14 +312,14 @@ ui <- page_navbar(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Pale green box
                 tags$div(
                   "Question: Find the date November 12th, 2020 (2020-11-12) by hovering over the points on the graph. 
-                  What is the water temperature for both scenarios on November 12, 2020 (2020-11-12)?",                
+                  What is the water temperature for both scenarios on that date?",                
                   style = "width: 100%; margin-bottom: 5px;"
                 ),
                 radioButtons(
                   "water_temp2",
                   label = NULL,
-                  choices = c("Baseline = 18.8   Fire 100 = 17.0", "Baseline = 14.7   Fire 100 = 17.7",
-                              "Baseline = 14.5   Fire 100 = 17.5", "Baseline = 17.7   Fire 100 = 14.7"),
+                  choices = c("Unburned = 18.8   Fire 100 = 17.0", "Unburned = 14.7   Fire 100 = 17.7",
+                              "Unburned = 14.5   Fire 100 = 17.5", "Unburned = 17.7   Fire 100 = 14.7"),
                   selected = character(0)
                 ),
                 textOutput("water_temp_feedback2")
@@ -257,7 +328,45 @@ ui <- page_navbar(
             # Div for side-by-side questions (temp questions)
             div(
               style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
-              # Question temp 1 box
+              # Question temp 3
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Moccasin color box
+                tags$div(
+                  "Question: Find the date August 14th, 2020 (2020-08-14) by hovering over the points on the graph. 
+                  What is the water temperature for both scenarios on that date?",
+                  style = "width: 100%; margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "water_temp3",
+                  label = NULL,
+                  choices = c("Unburned = 27.7 Fire 100 = 28.4", "Unburned = 27.8  Fire100 = 29.1", 
+                              "Unburned = 28.4  Fire100 = 27.7", "Unburned =  27.9  Fire100 =  29.2"),
+                  selected = character(0)
+                ),
+                textOutput("water_temp_feedback3")
+              ),
+              
+              # Question temp 4
+              div(
+                style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Pale green box
+                tags$div(
+                  "Question: When do you see the greatest difference between water temperature between the two scenarios?",                
+                  style = "width: 100%; margin-bottom: 5px;"
+                ),
+                radioButtons(
+                  "water_temp4",
+                  label = NULL,
+                  choices = c("April", "July", "September", "December"),
+                  selected = character(0)
+                ),
+                textOutput("water_temp_feedback4")
+              )
+            ),
+            
+            # Div for side-by-side questions (temp questions)
+            div(
+              style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+              # Question temp 5 
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Moccasin color box
                 tags$div(
@@ -265,15 +374,15 @@ ui <- page_navbar(
                   style = "width: 100%; margin-bottom: 5px;"
                 ),
                 radioButtons(
-                  "water_temp3",
+                  "water_temp5",
                   label = NULL,
                   choices = c("True", "False"),
                   selected = character(0)
                 ),
-                textOutput("water_temp_feedback3")
+                textOutput("water_temp_feedback5")
               ),
               
-              # Question temp 4 box
+              # Question temp 6
               div(
                 style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Pale green box
                 tags$div(
@@ -281,12 +390,12 @@ ui <- page_navbar(
                   style = "width: 100%; margin-bottom: 5px;"
                 ),
                 radioButtons(
-                  "water_temp4",
+                  "water_temp6",
                   label = NULL,
                   choices = c("Summer", "Winter"),
                   selected = character(0)
                 ),
-                textOutput("water_temp_feedback4")
+                textOutput("water_temp_feedback6")
               )
             )
             )# closes div for scroll
@@ -301,7 +410,8 @@ ui <- page_navbar(
               layout_sidebar(
                 sidebar = sidebar(
                   style = "height:100%;overflow-y: scroll;",
-                  p("Total chlorophyll a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll a concentrations for a year in an unburned watershed and a 100% burned watershed.
+                  p(tags$b("Practice your plotting skills:"),
+                  "Total chlorophyll a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll a concentrations for a year in an unburned watershed and a 100% burned watershed.
                   Plot time on the x axis and concentrations on the y axis. An example of what this may look like is to the right."),
                   downloadButton("download_chla", "Download chlorophyll data")
                 ),
@@ -334,7 +444,7 @@ ui <- page_navbar(
                 div(
                   style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
                   tags$div(
-                    "Question: Did the high intensity burn increase, decrease, or not change total chlorophyll-a concentrations compared to no-burn baseline conditions.",
+                    "Question: Did the high intensity burn increase, decrease, or not change total chlorophyll-a concentrations compared to no-burn conditions.",
                     style = "margin-bottom: 5px;"
                   ),
                   radioButtons(
@@ -354,13 +464,13 @@ ui <- page_navbar(
                   style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
                   tags$div(
                     "Question: Find the date September 29th, 2020 (2020-09-29) by hovering over the points on the graph. What is the total 
-                  chlorophyll-a concentration rounding to one decimal place for the unburned (baseline) and 100% burned (Fire100) scenario on that day?",
+                  chlorophyll-a concentration rounding to one decimal place for the unburned and 100% burned (Fire100) scenario on that day?",
                     style = "margin-bottom: 5px;"
                   ),
                   radioButtons(
                     "chla_bloom3",
                     label = NULL,
-                    choices = c("Baseline = 23.2 mg/L, Fire100 = 33.0 mg/L", "Baseline = 18.3 mg/L, Fire100 = 35.2 mg/L", "Baseline = 23.9 mg/L , Fire100 = 34.7 mg/L", "Baseline = 16.2 mg/L, Fire100 = 20.8 mg/L"),
+                    choices = c("Unburned = 23.2 mg/L, Fire100 = 33.0 mg/L", "Unburned = 18.3 mg/L, Fire100 = 35.2 mg/L", "Unburned = 23.9 mg/L , Fire100 = 34.7 mg/L", "Unburned = 16.2 mg/L, Fire100 = 20.8 mg/L"),
                     selected = character(0)
                   ),
                   textOutput("chla_bloom_feedback3")
@@ -381,10 +491,162 @@ ui <- page_navbar(
                   ),
                   textOutput("chla_bloom_feedback4")
                 )
+              ),
+              # Div for side-by-side questions (chla questions)
+              div(
+                style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question chla 5 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "Question: Find the max chlorophyll-a concentration for the 100% burned (Fire100) scenario.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom5",
+                    label = NULL,
+                    choices = c("34.7 mg/L", "32.4 mg/L", "37.2 mg/L", "35.2 mg/L"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback5")
+                ),
+                
+                # Question chla 6 box
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "Question: Warmer water temperatures increase total chlorophyll-a concentrations.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "chla_bloom6",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("chla_bloom_feedback6")
+                )
               )
             )#close first div that allows scroll page
   ),
  
+  # Key Takeaways
+  nav_panel("Key Takeways",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              tags$br(), #adds a line break
+              h3("What have you learned about wildfires and water quality from these activities?"),
+              
+              tags$br(), #adds a line break
+              # Div for side-by-side questions (takeaways)
+              div(
+                style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question takeaway1
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "T/F: It is important to study wildfires and how they affect water quality.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway1",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback1")
+                ),
+                # Question takeaway2
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "T/F: Wildfires can pose a threat to water quality by introducing nutrients, ash and other contaminants to water supplies.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway2",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback2")
+                )
+                ),
+                
+                # Div for side-by-side questions (takeaways)
+                div(
+                  style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question takeaway3
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "T/F: Wildfires decrease nutrients and algal blooms.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway3",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback3")
+                ),
+                # Question takeaway4
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "T/F: Algal blooms are bad for water quality because they deplete the oxygen in the water.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway4",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback4")
+                )
+              ),
+              
+              # Div for side-by-side questions (takeaways)
+              div(
+                style = "display: flex; gap: 20px; flex-wrap: wrap;",  # Flexbox layout with some space between the boxes
+                # Question takeaway5
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light yellow box
+                  tags$div(
+                    "T/F: Models can be used to simulate water quality conditions to forecast what could happen if there are wildfires in the region.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway5",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback5")
+                ),
+                # Question takeaway6
+                div(
+                  style = "flex: 1 1 45%; padding: 10px; background-color: #f0f8ff; border: 1px solid #ccc;",  # Light blue box
+                  tags$div(
+                    "T/F: Scientific research, water quality monitoring and careful management of drinking water sources are important for protecting human and ecosystem health.",
+                    style = "margin-bottom: 5px;"
+                  ),
+                  radioButtons(
+                    "takeaway6",
+                    label = NULL,
+                    choices = c("True", "False"),
+                    selected = character(0)
+                  ),
+                  textOutput("takeaway_feedback6")
+                )
+              )
+            )# close div scroll
+  ), # close nav_panel
+                
+  
+  
   # Vocabulary words
   nav_panel("Vocabulary",
             div(
@@ -392,7 +654,7 @@ ui <- page_navbar(
               
             layout_column_wrap(
               width = 1, 
-              h2("List of vocabulary words used in the background."),
+
               # tags$br(), #adds a line break
               p(
                 tags$b("algal bloom:"), #tags$b bolds the text
@@ -410,8 +672,13 @@ ui <- page_navbar(
                 " A green pigment found in photosynthetic organisms; used as an indicator of algal biomass."
               ),
               p(
+                tags$b("debris flow:"), 
+                " A type of landslide made up of a mixture of water-saturated rock debris and soil with a consistency similar to wet cement. 
+                Debris flows move rapidly downslope under the influence of gravity. Sometimes referred to as earth flows or mud flows."
+              ),
+              p(
                 tags$b("nitrate (NO3):"), 
-                " A compound containing nitrogen that can exist in the atmosphere or as a dissolved gas in water and which can have harmful effects on humans and animals.
+                " A compound containing nitrogen that can exist in the atmosphere or as a dissolved gas in water which can have harmful effects on humans and animals.
         Nitrates in water can cause severe illness in infants and domestic animals. A plant nutrient and inorganic fertilizer, nitrate is found in septic systems, animal feed lots, agricultural fertilizers, manure, industrial waste waters, sanitary landfills, and garbage dumps."
               ),
                
@@ -424,7 +691,7 @@ ui <- page_navbar(
                 tags$b("phosphorus:"), 
                 " An essential chemical food element that can contribute to the eutrophication of lakes and other water bodies. Contributes to poor water quality. Elevated phosphorus levels cause more algae to grow, blocking out sunlight and reducing oxygen for fish."
               ),
-              
+  
               p(
                 tags$b("reservoir:"), 
                 "Any natural or artificial holding area used to store, regulate, or control water."
@@ -454,26 +721,82 @@ ui <- page_navbar(
   ),
   
   
-  ### References Page
-  nav_panel("References",
+  ### Resources Page
+  nav_panel("Resources",
+            div(
+              style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+            ### YouTube videos
             layout_column_wrap(
               width = 1,
-              h3("References"),
+              div(
+              p(tags$b("Youtube Videos:")),
+              p("https://youtube.com/playlist?list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&feature=shared "),
+              p("https://www.youtube.com/watch?v=rrhz_kcYU2g&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=3"),
+              p("https://www.youtube.com/watch?v=Y9yEERskots&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=4"),
+              )# close div
+            ),
+            
+            ### Websites
+            layout_column_wrap(
+              width = 1,
+              div(
+              p(tags$b("Websites:")),
+              p("Wildland Fires Could be Putting Your Health at Risk: 
+                https://www.nps.gov/articles/000/wildland-fires-could-be-putting-your-drinking-water-at-risk.htm#:~:text=Burned%20areas%20release%20carbon%20compounds,miles%20away%20from%20the%20fires."),
+              p("Water Quality After a Wildfire: 
+                https://www.usgs.gov/centers/california-water-science-center/science/water-quality-after-wildfire"),
+              p("Wildfires and Water:
+                https://ca.water.usgs.gov/wildfires/"),
+              p("Benefits of Wildfire:
+                https://www.nps.gov/subjects/fire/upload/benefits-of-fire.pdf"),
+              )#close div
+            ),
+            
+            ### Citations
+            layout_column_wrap(
+              width = 1,
+              div(
+              p(tags$b("References:")),
               p("Caldwell PV, Elliott KJ, Liu N, Vose JM, Zietlow DR, Knoepp JD. Watershed-scale vegetation, water quantity, and water quality responses to wildfire in the southern Appalachian mountain region, United States. Hydrological Processes. 2020; 34: 5188–5209. https://doi.org/10.1002/hyp.13922"),
-              p("Cunningham, C.X., Williamson, G.J. & Bowman, D.M.J.S. Increasing frequency and intensity of the most extreme wildfires on Earth. Nat Ecol Evol 8, 1420–1425 (2024). https://doi.org/10.1038/s41559-024-02452-2")
+              p("Cunningham, C.X., Williamson, G.J. & Bowman, D.M.J.S. Increasing frequency and intensity of the most extreme wildfires on Earth. Nat Ecol Evol 8, 1420–1425 (2024). https://doi.org/10.1038/s41559-024-02452-2"),
+              p("De Palma‐Dow, A., McCullough, I. M., & Brentrup, J. A. (2022). Turning up the heat: Long‐term water quality responses to wildfires and climate change in a hypereutrophic lake. Ecosphere, 13(12), e4271."),
+              p("Murphy, S. F., Alpers, C. N., Anderson, C. W., Banta, J. R., Blake, J. M., Carpenter, K. D., ... & Ebel, B. A. (2023). A call for strategic water-quality monitoring to advance assessment and prediction of wildfire
+impacts on water supplies. Frontiers in Water, 5, 1144225."),
+              p("Olson, N. E., Boaggio, K. L., Rice, R. B., Foley, K. M., & LeDuc, S. D. (2023). Wildfires in the western United States are mobilizing PM 2.5-associated nutrients and may be contributing to downwind cyanobacteria
+blooms. Environmental Science: Processes & Impacts, 25(6), 1049-1066."),
+              p("Wandersee, M., Zimmerman, D., Kachurak, K., Angelo Gumapas, L., DeVault Wendt, K., & Kesteloot, K. (2023, July). Wildland fires could be putting your drinking water at risk (U.S. National Park Service). 
+                National Parks Service. https://www.nps.gov/articles/000/wildland-fires-could-be-putting-your-drinking-water-at-risk.htm#:~:text=Burned%20areas%20release%20carbon%20compounds,miles%20away%20from%20the%20fires. ")
+              )# close div
+            ) # closes div scroll
             )),
   
   # How the dashboard was set up         
   nav_panel("Dashboard Setup",
+            div(style = "overflow-x: hidden; overflow-y: auto;",
             layout_column_wrap(
               width =1, 
-              p("The data used in this dashboard was generated using a General Lake Model (GLM) coupled with an Aquatic EcoDynamics library (AED) of a secondary drinking water reservoir in Virginia.. GLM is a water balance and one-dimensional vertical stratification hydrodynamic model and AED is a water quality modelling library. 
-                A literature review of how nutrients (nitrate and phosphorus) are affected in a reservoir following different burn intensities was used to manipulate the model.")
-            ),
+              div(
+              p(
+              "We used a hydrologic model (GLM-AED) to simulate inflows of water into a drinking water reservoir in southwestern Virginia. 
+              The reservoir has not experienced a wildfire."),
+              p("We found scientific studies on reservoirs that had experienced wildfires. The studies measured concentrations of nutrients (N, P) before and after the wildfires."),
+              p("We then input the different concentrations of N and P from the literature into our model that simulated different scenarios of various burn intensities (unburned, 25%, 50%, and 100% burned) to generate N and P input data for the dashboard."),
+              p(
+              "The data used in this dashboard was generated using a General Lake Model (GLM) coupled with an Aquatic EcoDynamics library (AED) of a secondary drinking water reservoir in Virginia.
+              GLM is a water balance and one-dimensional vertical stratification hydrodynamic model and AED is a water quality modeling library. The dashboard was created using the Shiny package in R."),
+                tags$img(src = "DashboardWorkflow.png", 
+                         style = "width: 60%; height: auto; margin-top:0;")
+              )# close div
+              ),
+            
+            div(
             layout_column_wrap(
               width =1, 
               p("Created by: Dr. Madeline Schreiber and Carly Bauer")
-            )),
+            )
+            )# closes created by div
+            )# closes div scroll
+            ),
 
   # Page for teacher use
   nav_panel("Teachers",
@@ -482,29 +805,42 @@ ui <- page_navbar(
               
             layout_column_wrap(
               width =1, 
-              h2("Lesson Summary: How can wildfires impact water quality in drinking water reservoirs in southwest Virginia?"),
+              div(
+              h3("Lesson Summary: How can wildfires impact water quality in drinking water reservoirs in southwest Virginia?"),
               
               tags$ul(
                 tags$li("Review background material"),
                 tags$li("Work with water quality data to investigate how wildfire impacts water quality in drinking water reservoirs"),
                 tags$li("Plot time series data of water quality variables in drinking water reservoirs affected by wildfire and answer questions about the trends")
-              ),
+              )# close div
+                ),
               
-              h2("Student Learning Objectives", style = "margin-bottom: 0px;"), 
+              
+              layout_column_wrap(
+                width =1, 
+                div(
+              h3("Student Learning Objectives", style = "margin-bottom: 0px;"), 
                 p("After completing this lesson, students will be able to: ", style = "margin-bottom: 0px;"),
               tags$ul(
                 style = "margin-top: 0px; margin-bottom: 0px",
                 tags$li("Describe the impact of wildfire burning on water quality"),
                 tags$li("Compare the impacts of wildfire burning on water quality using a dashboard containing model simulation data"),
                 tags$li("Plot and explore time series data to investigate how wildfire in a watershed impacts water temperature")
-              ),
+              )
+                )# close div
+                ),
               
-              h2("Lesson Plan Activities"),
+              layout_column_wrap(
+                width =1, 
+                div(
+              h3("Lesson Plan Activities"),
                tags$ul(
                  tags$li("Students review wildfire impacts on water quality via backgorund readings built into the dashboard and answer 'Check my Understanding' questions"),
                  tags$li("Students explore a conceptual activiting using the dashbard to examine nutrient input to a reservoir from a watershed with different fire scenarios (unburned, 25%, 50%, or 100% burned), plot those data using a spreading/graphing progam, calculate percent change using excel template, and answer questions"),
                  tags$li("Students download time series data")
-               ),
+               )
+                )# close div
+                 ),
               
 
             )

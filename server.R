@@ -30,6 +30,36 @@ server <- function(input, output, session) {
     }
   })
   
+  # Feedback for Wildfire Intensity question
+  output$wildfire_intensity_feedback <- renderText({
+    req(input$wildfire_intensity)  # Ensure user has selected an answer
+    if (input$wildfire_intensity == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for Wildfire Intensity question
+  output$wildfire_causes_feedback <- renderText({
+    req(input$wildfire_causes)  # Ensure user has selected an answer
+    if (input$wildfire_causes == "all of the above") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for Wildfire Intensity question
+  output$wildfire_contaminants_feedback <- renderText({
+    req(input$wildfire_contaminants)  # Ensure user has selected an answer
+    if (input$wildfire_contaminants == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
   # Feedback for Wildfire Effect question
   output$wildfire_effect_feedback <- renderText({
     req(input$wildfire_effect)  # Ensure user has selected an answer
@@ -131,10 +161,126 @@ server <- function(input, output, session) {
     }
   })
   
+  # Feedback for nutrients question 5
+  output$nutrients_feedback1 <- renderText({
+    req(input$nutrients1)  # Ensure user has selected an answer
+    if (input$nutrients1 == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
+  # Feedback for nutrients question 6
+  output$nutrients_feedback2 <- renderText({
+    req(input$nutrients2)  # Ensure user has selected an answer
+    if (input$nutrients2 == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again"
+    }
+  })
+  
   # output$gaugePlot_DOC <- renderPlotly({
   #   req(selected_data())  # Ensure data is available
   #   create_gauge(selected_data()$DOC_Max_mgL, "DOC Max (mg/L)", max(max_df$DOC_Max_mgL))
   # })  
+  
+
+  
+  temp_data <- read_csv("TimeSeries_Temp.csv")
+  output$download_temp <- downloadHandler(
+    filename = function() {
+      paste("temp_data", ".xlsx", sep = "")
+    },
+    content = function(file){
+      write_xlsx(temp_data, file)
+    }
+  )
+  
+  output$download_directions <- downloadHandler(
+    filename = function() {
+      "HowToPlotTimeSeries.pdf"
+    },
+    content = function(file) {
+      file.copy("HowToPlotTimeSeries.pdf", file)
+    }
+  )
+  
+  output$temp_timeseries <- renderPlotly({
+    t <- ggplot(temp_data)+
+      theme_bw()+
+      theme(panel.grid = element_blank()) +  # Remove gridlines
+      geom_line(aes(Date, Unburned_temp_C, color = "Unburned"))+
+      geom_line(aes(Date, Fire100_temp_C, color = "Fire100"))+
+      scale_color_manual(values = c("Unburned" = "black", "Fire100" = "red")) +  # Custom colors
+      labs(x= 'Date',
+           y = 'Water temperature (C)',
+           color = 'Scenario')
+    
+    ggplotly(t)
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback <- renderText({
+    req(input$water_temp)  # Ensure user has selected an answer
+    if (input$water_temp == "Yes") {
+      "✅ Correct! We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a wildfire based on our plot."
+    } else {
+      "❌ Incorrect. We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a wildfire based on our plot."
+    }
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback2 <- renderText({
+    req(input$water_temp2)  # Ensure user has selected an answer
+    if (input$water_temp2 == "Unburned = 14.7   Fire 100 = 17.7") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback3 <- renderText({
+    req(input$water_temp3)  # Ensure user has selected an answer
+    if (input$water_temp3 == "Unburned = 27.7 Fire 100 = 28.4") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback4 <- renderText({
+    req(input$water_temp4)  # Ensure user has selected an answer
+    if (input$water_temp4 == "December") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback5 <- renderText({
+    req(input$water_temp5)  # Ensure user has selected an answer
+    if (input$water_temp5 == "True") {
+      "✅ Correct!"
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
+  
+  # Feedback for Water temp question
+  output$water_temp_feedback6 <- renderText({
+    req(input$water_temp6)  # Ensure user has selected an answer
+    if (input$water_temp6 == "Summer") {
+      "✅ Correct! The air temperature is warmer which warms the water temperature." 
+    } else {
+      "❌ Incorrect. Try again."
+    }
+  })
   
   chlorophyll_data <- read_csv("TimeSeries_TotalChla.csv") #download data as csv
   output$download_chla <- downloadHandler(
@@ -150,11 +296,11 @@ server <- function(input, output, session) {
     c <- ggplot(chlorophyll_data) +
       theme_bw() +
       theme(panel.grid = element_blank()) +  # Remove gridlines
-      geom_point(aes(Date, PHY_chla_baseline, color = "Baseline"), size = 0.5) +
-      geom_point(aes(Date, PHY_chla_algae, color = "Fire100"), size = 0.5)+
-      scale_color_manual(values = c("Baseline" = "black", "Fire100" = "green")) +  # Custom colors
+      geom_point(aes(Date, Unburned_Chlorophylla_mgL, color = "Unburned"), size = 0.5) +
+      geom_point(aes(Date, Fire100_Chlorophylla_mgL, color = "Fire100"), size = 0.5)+
+      scale_color_manual(values = c("Unburned" = "black", "Fire100" = "green")) +  # Custom colors
       labs (x = 'Date',
-            y = 'Total chlorophyll a concentrations (unit)',
+            y = 'Total chlorophyll a concentrations (mg/L)',
             color = 'Scenario')
     
     ggplotly(c)
@@ -183,7 +329,7 @@ server <- function(input, output, session) {
   # Feedback for chla bloom question 3
   output$chla_bloom_feedback3 <- renderText({
     req(input$chla_bloom3)  # Ensure user has selected an answer
-    if (input$chla_bloom3 == "Baseline = 23.9 mg/L , Fire100 = 34.7 mg/L") {
+    if (input$chla_bloom3 == "Unburned = 23.9 mg/L , Fire100 = 34.7 mg/L") {
       "✅ Correct!"
     } else {
       "❌ Incorrect. Try again"
@@ -200,80 +346,88 @@ server <- function(input, output, session) {
     }
   })
   
-  temp_data <- read_csv("TimeSeries_Temp.csv")
-  output$download_temp <- downloadHandler(
-    filename = function() {
-      paste("temp_data", ".xlsx", sep = "")
-    },
-    content = function(file){
-      write_xlsx(temp_data, file)
-    }
-  )
-  
-  output$download_directions <- downloadHandler(
-    filename = function() {
-      "HowToPlotTimeSeries.pdf"
-    },
-    content = function(file) {
-      file.copy("HowToPlotTimeSeries.pdf", file)
-    }
-  )
-  
-  output$temp_timeseries <- renderPlotly({
-    t <- ggplot(temp_data)+
-      theme_bw()+
-      theme(panel.grid = element_blank()) +  # Remove gridlines
-      geom_line(aes(Date, baseline_temp_C, color = "Baseline"))+
-      geom_line(aes(Date, fire100_temp_C, color = "Fire100"))+
-      scale_color_manual(values = c("Baseline" = "black", "Fire100" = "red")) +  # Custom colors
-      labs(x= 'Date',
-           y = 'Water temperature (C)',
-           color = 'Scenario')
-    
-    ggplotly(t)
-  })
-  
-  # Feedback for Water temp question
-  output$water_temp_feedback <- renderText({
-    req(input$water_temp)  # Ensure user has selected an answer
-    if (input$water_temp == "Decrease") {
-      "✅ Correct! We plotted the highest burn intensity, so if the watershed burned at a smaller intensity, 
-      we would expect the water temperature to decrease from what we plotted."
+  # Feedback for chla bloom question 5
+  output$chla_bloom_feedback5 <- renderText({
+    req(input$chla_bloom5)  # Ensure user has selected an answer
+    if (input$chla_bloom5 == "35.2 mg/L") {
+      "✅ Correct! "
     } else {
-      "❌ Incorrect. We would expect water temperature to be less in comparison to the highest burn intensity."
+      "❌ Incorrect. Try again"
     }
   })
   
-  # Feedback for Water temp question
-  output$water_temp_feedback2 <- renderText({
-    req(input$water_temp2)  # Ensure user has selected an answer
-    if (input$water_temp2 == "Baseline = 14.7   Fire 100 = 17.7") {
-      "✅ Correct!"
+  # Feedback for chla bloom question 6
+  output$chla_bloom_feedback6 <- renderText({
+    req(input$chla_bloom6)  # Ensure user has selected an answer
+    if (input$chla_bloom6 == "True") {
+      "✅ Correct! Algae likes warmer water, so higher water temperatures increase total chlorophyll-a concentrations and thus algal blooms."
     } else {
-      "❌ Incorrect. Try again."
+      "❌ Incorrect. Try again"
     }
   })
   
-  # Feedback for Water temp question
-  output$water_temp_feedback3 <- renderText({
-    req(input$water_temp3)  # Ensure user has selected an answer
-    if (input$water_temp3 == "True") {
-      "✅ Correct!"
-    } else {
-      "❌ Incorrect. Try again."
-    }
-  })
-  
-  # Feedback for Water temp question
-  output$water_temp_feedback4 <- renderText({
-    req(input$water_temp4)  # Ensure user has selected an answer
-    if (input$water_temp4 == "Summer") {
-      "✅ Correct! The air temperature is warmer which warms the water temperature." 
-    } else {
-      "❌ Incorrect. Try again."
-    }
-  })
-  
+
+# Feedback for key takeaway question 1
+output$takeaway_feedback1 <- renderText({
+  req(input$takeaway1)  # Ensure user has selected an answer
+  if (input$takeaway1 == "True") {
+    "✅ Correct! It's important to study how changing environments affect our vital sources of water."
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+# Feedback for key takeaway question 2
+output$takeaway_feedback2 <- renderText({
+  req(input$takeaway2)  # Ensure user has selected an answer
+  if (input$takeaway2 == "True") {
+    "✅ Correct!"
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+# Feedback for key takeaway question 3
+output$takeaway_feedback3 <- renderText({
+  req(input$takeaway3)  # Ensure user has selected an answer
+  if (input$takeaway3 == "False") {
+    "✅ Correct! Wildfires increase nutrients (nitrate and phosphorus) and thus algal blooms."
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+# Feedback for key takeaway question 4
+output$takeaway_feedback4 <- renderText({
+  req(input$takeaway4)  # Ensure user has selected an answer
+  if (input$takeaway4 == "True") {
+    "✅ Correct! Algae deplete the oxygen within the water which causes fish to die because they can't breathe without oxygen."
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+# Feedback for key takeaway question 5
+output$takeaway_feedback5 <- renderText({
+  req(input$takeaway5)  # Ensure user has selected an answer
+  if (input$takeaway5 == "True") {
+    "✅ Correct! Click on the Dashboard Setup tab to learn more!"
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+# Feedback for key takeaway question 6
+output$takeaway_feedback6 <- renderText({
+  req(input$takeaway6)  # Ensure user has selected an answer
+  if (input$takeaway6 == "True") {
+    "✅ Correct!"
+  } else {
+    "❌ Incorrect. Try again"
+  }
+})
+
+
 }
 
 # # Run the application 
