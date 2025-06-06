@@ -729,10 +729,27 @@ ui <- page_navbar(
             layout_column_wrap(
               width = 1,
               div(
-              p(tags$b("Youtube Videos:")),
-              p("https://youtube.com/playlist?list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&feature=shared "),
-              p("https://www.youtube.com/watch?v=rrhz_kcYU2g&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=3"),
-              p("https://www.youtube.com/watch?v=Y9yEERskots&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=4"),
+                p(
+                  tags$a(
+                    href = "https://youtube.com/playlist?list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&feature=shared",
+                    "Wildfire Education Video Playlist",
+                    target = "_blank"
+                  )
+                ),
+                p(
+                  tags$a(
+                    href = "https://www.youtube.com/watch?v=rrhz_kcYU2g&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=3",
+                    "Video 1: Water Quality Impacts of Wildfires",
+                    target = "_blank"
+                  )
+                ),
+                p(
+                  tags$a(
+                    href = "https://www.youtube.com/watch?v=Y9yEERskots&list=PLr5bB3qcMRzS7TXGbmTYTkNRSTLtFNUrZ&index=4",
+                    "Video 2: Managing Watersheds Post-Fire",
+                    target = "_blank"
+                  )
+                )
               )# close div
             ),
             
@@ -741,15 +758,34 @@ ui <- page_navbar(
               width = 1,
               div(
               p(tags$b("Websites:")),
-              p("Wildland Fires Could be Putting Your Health at Risk: 
-                https://www.nps.gov/articles/000/wildland-fires-could-be-putting-your-drinking-water-at-risk.htm#:~:text=Burned%20areas%20release%20carbon%20compounds,miles%20away%20from%20the%20fires."),
-              p("Water Quality After a Wildfire: 
-                https://www.usgs.gov/centers/california-water-science-center/science/water-quality-after-wildfire"),
-              p("Wildfires and Water:
-                https://ca.water.usgs.gov/wildfires/"),
-              p("Benefits of Wildfire:
-                https://www.nps.gov/subjects/fire/upload/benefits-of-fire.pdf"),
-              )#close div
+              p(
+                tags$a(
+                  href = "https://www.nps.gov/articles/000/wildland-fires-could-be-putting-your-drinking-water-at-risk.htm#:~:text=Burned%20areas%20release%20carbon%20compounds,miles%20away%20from%20the%20fires.",
+                  "Wildland Fires Could Be Putting Your Health at Risk",
+                  target = "_blank"
+                )
+              ),
+              p(
+                tags$a(
+                  href = "https://www.usgs.gov/centers/california-water-science-center/science/water-quality-after-wildfire",
+                  "Water Quality After a Wildfire",
+                  target = "_blank"
+                )
+              ),
+              p(
+                tags$a(
+                  href = "https://ca.water.usgs.gov/wildfires/",
+                  "Wildfires and Water",
+                  target = "_blank"
+                )
+              ),
+              p(
+                tags$a(
+                  href = "https://www.nps.gov/subjects/fire/upload/benefits-of-fire.pdf",
+                  "Benefits of Wildfire",
+                  target = "_blank"),
+              )
+                )#close div
             ),
             
             ### Citations
@@ -802,6 +838,17 @@ blooms. Environmental Science: Processes & Impacts, 25(6), 1049-1066."),
   nav_panel("Teachers",
             div(
               style = "height: 90vh; overflow-y: auto; padding-right: 1rem;", #allows scrollable page
+              
+              layout_column_wrap(
+                width =1, 
+                div(
+                  h3("Download background and introduction material"),
+                  div(
+                    style = "margin-top: 1rem;",
+                    downloadButton("download_intropptx", "Download as PowerPoint (.pptx)", class = "btn btn-primary"),
+                    span(" ", style = "margin-left: 1rem;"), # adds spacing between buttons
+                    downloadButton("download_intropdf", "Download as PDF (.pdf)", class = "btn btn-primary")
+                  ))),
               
             layout_column_wrap(
               width =1, 

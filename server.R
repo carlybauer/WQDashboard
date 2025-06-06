@@ -224,10 +224,10 @@ server <- function(input, output, session) {
   # Feedback for Water temp question
   output$water_temp_feedback <- renderText({
     req(input$water_temp)  # Ensure user has selected an answer
-    if (input$water_temp == "Yes") {
-      "✅ Correct! We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a wildfire based on our plot."
+    if (input$water_temp == "No") {
+      "✅ Correct! We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a high intensity wildfire based on our plot."
     } else {
-      "❌ Incorrect. We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a wildfire based on our plot."
+      "❌ Incorrect. We would expect an unburned watershed to have lower surface water temperatures compared to a watershed that experienced a high intensity wildfire based on our plot."
     }
   })
   
@@ -427,6 +427,29 @@ output$takeaway_feedback6 <- renderText({
   }
 })
 
+# Download Intro/Background powerpoint as .pptx
+output$download_intropptx <- downloadHandler(
+  filename = function() {
+    "Wildfire Water Quality Slides.pptx"
+  },
+  content = function(file) {
+    # Copy the pptx file from your app directory to the download location
+    file.copy("Wildfire Water Quality Slides.pptx", file)
+  },
+  contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+)
+
+# Download Intro/Background powerpoint as .pdf
+
+output$download_intropdf <- downloadHandler(
+  filename = function() {
+    "Wildfire Water Quality Slides.pdf"
+  },
+  content = function(file) {
+    file.copy("Wildfire Water Quality Slides.pdf", file)
+  },
+  contentType = "application/pdf"
+)
 
 }
 
