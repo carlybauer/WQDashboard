@@ -411,9 +411,9 @@ ui <- page_navbar(
                 sidebar = sidebar(
                   style = "height:100%;overflow-y: scroll;",
                   p(tags$b("Practice your plotting skills:"),
-                  "Total chlorophyll a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll a concentrations for a year in an unburned watershed and a 100% burned watershed.
+                  "Total chlorophyll-a concentrations can be used as an indicator for algal blooms. Download excel file of a time series of total chlorophyll-a concentrations for a year in an unburned watershed and a 100% burned watershed.
                   Plot time on the x axis and concentrations on the y axis. An example of what this may look like is to the right."),
-                  downloadButton("download_chla", "Download chlorophyll data")
+                  downloadButton("download_chla", "Download chlorophyll-a data")
                 ),
                 layout_column_wrap(
                   width = 1,
@@ -665,10 +665,10 @@ ui <- page_navbar(
              
               p(
                 tags$b("ash:"), 
-                "The mineral content of a product remaining after complete combustion."
+                "The mineral content of a product remaining after complete combustion, e.g., burning from wildfire."
               ),
               p(
-                tags$b("chlorophyll a:"), 
+                tags$b("chlorophyll-a:"), 
                 " A green pigment found in photosynthetic organisms; used as an indicator of algal biomass."
               ),
               p(
@@ -684,7 +684,7 @@ ui <- page_navbar(
                
               p(
                 tags$b("nutrients:"), 
-                "Substances such as nitrogen and phosphorus compounds necessary for growth and survival. Elevated levels can cause unwanted growth of algae, and can result in the lowering of the amount of oxygen in the water when the algae die and decay."
+                "Substances such as nitrogen and phosphorus compounds necessary for biological growth and survival. Elevated levels can cause unwanted growth of algae, and can result in the lowering of the amount of oxygen in the water when the algae die and decay."
               ),
               
               p(
@@ -702,7 +702,7 @@ ui <- page_navbar(
               ),
               p(
                 tags$b("turbidity:"), 
-                " A measure of the cloudy condition in water due to suspended solids or organic matter."
+                " A measure of the cloudy condition in water due to suspended solids, organic matter, or phytoplankton/algae biomass."
               ),
               p(
                 tags$b("watershed:"), 
@@ -803,8 +803,40 @@ blooms. Environmental Science: Processes & Impacts, 25(6), 1049-1066."),
               p("Wandersee, M., Zimmerman, D., Kachurak, K., Angelo Gumapas, L., DeVault Wendt, K., & Kesteloot, K. (2023, July). Wildland fires could be putting your drinking water at risk (U.S. National Park Service). 
                 National Parks Service. https://www.nps.gov/articles/000/wildland-fires-could-be-putting-your-drinking-water-at-risk.htm#:~:text=Burned%20areas%20release%20carbon%20compounds,miles%20away%20from%20the%20fires. ")
               )# close div
-            ) # closes div scroll
-            )),
+            ), 
+            
+            
+            ### Licensing
+            layout_column_wrap(
+              width = 1,
+              div(
+                p(tags$b("Licensing:")),
+                p(
+                  tags$a(
+                    href = "https://macrosystemseddie.shinyapps.io/water-quality-wildfires/",
+                    "Computational Learning Module: Wildfire Effects on Water Quality"
+                  ),
+                  " © 2025 by ",
+                  "Carly E. Bauer, Mary E. Lofton, Heather L. Wander, Madeline E. Schreiber ",
+                  "is licensed under ",
+                  tags$a(
+                    href = "https://creativecommons.org/licenses/by/4.0/",
+                    "CC BY 4.0"
+                  ),
+                  tags$img(
+                    src = "https://mirrors.creativecommons.org/presskit/icons/cc.svg",
+                    alt = "CC",
+                    style = "max-width: 1em; max-height:1em; margin-left: .2em;"
+                  ),
+                  tags$img(
+                    src = "https://mirrors.creativecommons.org/presskit/icons/by.svg",
+                    alt = "BY",
+                    style = "max-width: 1em; max-height:1em; margin-left: .2em;"
+                  )
+                )
+              )# closes div scroll
+            ))),
+            
   
   # How the dashboard was set up         
   nav_panel("Dashboard Setup",
@@ -882,8 +914,8 @@ blooms. Environmental Science: Processes & Impacts, 25(6), 1049-1066."),
                 div(
               h3("Lesson Plan Activities"),
                tags$ul(
-                 tags$li("Students review wildfire impacts on water quality via backgorund readings built into the dashboard and answer 'Check my Understanding' questions"),
-                 tags$li("Students explore a conceptual activiting using the dashbard to examine nutrient input to a reservoir from a watershed with different fire scenarios (unburned, 25%, 50%, or 100% burned), plot those data using a spreading/graphing progam, calculate percent change using excel template, and answer questions"),
+                 tags$li("Students review wildfire impacts on water quality via background readings built into the dashboard and answer 'Check my Understanding' questions"),
+                 tags$li("Students explore a conceptual activities using the dashbard to examine nutrient input to a reservoir from a watershed that experienced different burn intensities (unburned, 25%, 50%, or 100% burned), plot those data using a spreadsheet/graphing progam, calculate percent change using excel template, and answer questions"),
                  tags$li("Students download time series data")
                )
                 )# close div
